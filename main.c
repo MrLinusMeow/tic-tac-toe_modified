@@ -10,28 +10,30 @@ int main(){
  char memX[3] = {'0','0','0'};
  char memY[3] = {'0','0','0'};
  char c;
- char isX = 2;
+ char round = 0;
  int ix = 3;
  int iy = 3;
  while(read(0, &c, 1) > 0){
   if( !isdigit(c) ) continue;
   if( c == '0' ) break;
-  if( (table[c-49] != 'X') || (table[c-49] != 'Y') ){
-   table[c-49] = ((isX++)%2) ? 'X' : 'Y';
+  if( (table[c-49] != 'X') && (table[c-49] != 'Y') ){
+   table[c-49] = ((round)%2) ? 'X' : 'Y';
    if(memX[(ix-0)%3] != '0'){
     table[(int)memX[(ix-0)%3]] = (char)memX[(ix-0)%3]+49;
    }
-   if(memY[(iy-0)%3] != '0'){
+   if((memY[(iy-0)%3] != '0')){
     table[(int)memY[(iy-0)%3]] = (char)memY[(iy-0)%3]+49;
    }
-   if(table[c-49] == 'X'){
-    memX[(ix++)%3] = c-49;
-   }
-   if(table[c-49] == 'Y'){
+   if(round%2){
     memY[(iy++)%3] = c-49;
+    table[c-49] = 'Y';
+   }else{
+    memX[(ix++)%3] = c-49;
+    table[c-49] = 'X';
    }
+   ++round;
   }else{
-   printf("%c is already placed.", table[c-49]);
+   printf("%c is already placed.\n", table[c-49]);
   }
 
   printf("%c%c%c\n", table[0], table[1], table[2]);
